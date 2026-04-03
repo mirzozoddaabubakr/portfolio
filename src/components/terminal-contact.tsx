@@ -6,28 +6,20 @@ import { cn } from "@/lib/utils";
 export default function TerminalContact() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("sending");
     
     const formData = new FormData(e.currentTarget);
-    const data = {
-      email: formData.get("email"),
-      message: formData.get("message")
-    };
+    const email = formData.get("email") as string;
+    const message = formData.get("message") as string;
     
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      
-      if (!res.ok) throw new Error();
+    const mailtoUrl = `mailto:mirzozoddaabubakr@gmail.com?subject=Portfolio Inquiry from ${email}&body=${encodeURIComponent(message)}`;
+    
+    setTimeout(() => {
+      window.location.href = mailtoUrl;
       setStatus("success");
-    } catch {
-      setStatus("error");
-    }
+    }, 800);
   };
 
   return (
