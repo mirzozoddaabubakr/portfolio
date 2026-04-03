@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Full-Stack Developer | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+    }
+  }
+</script>
+<script src="lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+/* ── THE ORYZO AESTHETIC (High-End Product Showcase) ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html,body {
+  width:100%;
+  /* High-end physical studio backdrop */
+  background: #0d0c0b; 
+  font-family: 'Inter', sans-serif;
+  color: #eae4dd;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body{cursor: none;} /* Custom Cursor */
+
+#c{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#scroll-space{height:800vh;position:relative;z-index:5;pointer-events:none}
+
+/* ── OVERLAY UI ── */
+#overlay{position:fixed;inset:0;z-index:100;pointer-events:none;}
+
+/* NAV */
+nav{
+  position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
+  padding:40px 60px;pointer-events:auto;
+}
+.nav-logo{font-family:'Inter',sans-serif;font-weight:700;font-size:1.4rem;letter-spacing:-0.03em;}
+.nav-r{display:flex;gap:32px;font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.nav-link { position: relative; opacity: 0.6; transition: 0.3s; cursor: pointer;}
+.nav-link.active, .nav-link:hover { opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,0.4); }
+.nav-link.active::after {
+  content:''; position:absolute; bottom:-4px; left:0; width:100%; height:1px;
+  border-bottom: 1px dotted rgba(255,255,255,0.5);
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed; top: 0; left: 0; width: 10px; height: 10px; background: #fff;
+  border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+}
+.cursor-hover #cursor { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border: 1px solid #fff;}
+
+/* ── 1:1 ORYZO SCROLL SECTIONS ── */
+.oryzo-section {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10vw; 
+  pointer-events: none;
+  opacity: 0;
+}
+
+.left-col {
+  width: 40%;
+  transform: translateX(-40px);
+}
+.right-col {
+  width: 32%;
+  transform: translateX(40px);
+}
+
+/* Massive Left Typography (Apple-Grade) */
+.h-massive {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(3rem, 5vw, 6.5rem);
+  line-height: .92;
+  letter-spacing: -0.05em;
+  color: #fffaf0; 
+}
+
+/* Section Indicators */
+.s-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #d46f4d; /* High-end contrast color */
+  margin-bottom: 20px;
+  letter-spacing: 0.1em;
+}
+
+/* Refined Subtext */
+.p-desc {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #d6ccbe;
+  line-height: 1.5;
+}
+
+.p-small {
+  font-size: 0.95rem;
+  margin-top: 15px;
+  opacity: 0.7;
+}
+
+/* STACK GRID */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 30px;
+}
+.stack-item {
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fffaf0;
+}
+
+.p-tiny {
+  position: absolute;
+  bottom: 0;
+  right: 60px;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: right;
+  opacity: 0.5;
+  border-top: 1px dotted rgba(255,255,255,0.3);
+  padding-top: 8px;
+}
+
+#loading{position:fixed;inset:0;z-index:9000;background:#0d0c0b;display:flex;align-items:center;justify-content:center;
+  color:#eae4dd;font-family:'Inter',sans-serif;font-size:1rem;font-weight:500;letter-spacing:0.1em;
+  transition:opacity 1.2s ease}
+.gone {opacity: 0; pointer-events:none;}
+</style>
+</head>
+<body>
+
+<div id="loading">LOADING EXPERIENCE...</div>
+<div id="cursor"></div>
+
+<canvas id="c"></canvas>
+<div id="scroll-space"></div>
+
+<div id="overlay">
+  <nav>
+    <div class="nav-logo">AB</div> 
+    <div class="nav-r">
+      <span class="nav-link active">INTRO</span>
+      <span class="nav-link">EXPERIENCE</span>
+      <span class="nav-link">STACK</span>
+      <span class="nav-link">PROJECTS</span>
+      <span class="nav-link">REACH</span>
+      <span class="nav-link">CONTACT</span>
+    </div>
+  </nav>
+
+  <!-- SECTION 1: HERO -->
+  <div class="oryzo-section" id="s1">
+    <div class="left-col left-target">
+      <div class="s-num">01 / INTRO</div>
+      <h1 class="h-massive">ISN'T JUST<br/>A DEVELOPER.</h1>
+    </div>
+    <div class="right-col right-target">
+      <p class="p-desc">I build physical, digital architectures. It's the result of 2+ years of full-stack engineering.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: EXPERIENCE -->
+  <div class="oryzo-section" id="s2">
+    <div class="left-col left-target">
+      <div class="s-num">02 / EXPERIENCE</div>
+      <h1 class="h-massive">FREELANCE<br/>EVOLUTION.</h1>
+    </div>
+    <div class="right-col right-target">
+      <p class="p-desc">Freelance Developer<br/>(2023 — Present)</p>
+      <p class="p-small">Building high-performance Shopify stores, custom web libraries, and robust API integrations for modern brands.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: STACK -->
+  <div class="oryzo-section" id="s3">
+    <div class="left-col left-target">
+      <div class="s-num">03 / STACK</div>
+      <h1 class="h-massive">ENGINEERING<br/>THE CORE.</h1>
+    </div>
+    <div class="right-col right-target">
+      <div class="stack-grid">
+        <div class="stack-item">REACT.JS</div>
+        <div class="stack-item">NODE.JS</div>
+        <div class="stack-item">EXPRESS.JS</div>
+        <div class="stack-item">MONGODB</div>
+        <div class="stack-item">SHOPIFY</div>
+        <div class="stack-item">GIT/GITHUB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PROJECTS -->
+  <div class="oryzo-section" id="s4">
+    <div class="left-col left-target">
+      <div class="s-num">04 / WORKS</div>
+      <h1 class="h-massive">SELECTED<br/>WORKS.</h1>
+    </div>
+    <div class="right-col right-target">
+      <p class="p-desc">Digitally Crafted<br/>Solutions.</p>
+      <p class="p-small">From world-class portfolio engines to secure digital libraries and custom e-commerce storefronts.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5: GLOBAL REACH -->
+  <div class="oryzo-section" id="s5">
+    <div class="left-col left-target">
+      <div class="s-num">05 / REACH</div>
+      <h1 class="h-massive">MULTILINGUAL<br/>NATIVE.</h1>
+    </div>
+    <div class="right-col right-target">
+      <p class="p-desc">Tajik (Native) · Persian (C2)<br/>English (C1) · Russian (C1)<br/>Spanish (A1) · Polish (A1)</p>
+    </div>
+  </div>
+
+  <!-- SECTION 6: CONTACT -->
+  <div class="oryzo-section" id="s6">
+    <div class="left-col left-target">
+      <div class="s-num">06 / CONTACT</div>
+      <h1 class="h-massive">LET'S BUILD<br/>THE FUTURE.</h1>
+    </div>
+    <div class="right-col right-target">
+      <p class="p-desc">Open for<br/>Collaborations.</p>
+      <p class="p-small">Reach out to start building your next cinematic digital experience.</p>
+    </div>
+  </div>
+
+  <div class="p-tiny">* BUILT WITH<br/>THREE.JS & EXR</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// ── CUSTOM CURSOR LOGIC ──
+const cursor = document.getElementById('cursor');
+window.addEventListener('mousemove', (e) => {
+  gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+});
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+  link.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, powerPreference:'high-performance', alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.35;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(0, 0, 8); 
+
+let heroModel = new THREE.Group();
+scene.add(heroModel);
+
+/* ── 1:1 CLONE: THE STUDIO EXR AND GLTF PIPELINE ── */
+new EXRLoader().load('studio.exr', (texture) => {
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+  scene.environment = texture;
+  
+  new GLTFLoader().load('model.glb', (gltf) => {
+    const obj = gltf.scene;
+    const box = new THREE.Box3().setFromObject(obj);
+    const center = box.getCenter(new THREE.Vector3());
+    obj.position.sub(center); 
+    const size = box.getSize(new THREE.Vector3()).length();
+    const desiredSize = 6.0; 
+    obj.scale.setScalar(desiredSize / size);
+
+    obj.traverse((child) => {
+      if (child.isMesh && child.material) {
+        child.material.envMapIntensity = 1.6;
+        child.material.needsUpdate = true;
+      }
+    });
+
+    heroModel.add(obj);
+    document.getElementById('loading').classList.add('gone');
+    initGSAP();
+  });
+});
+
+
+/* ── ORYZO SCROLL PHYSICS ── */
+function initGSAP() {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#scroll-space",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 1.5 
+    }
+  });
+
+  // NAV STATE SYNC
+  const navLinks = document.querySelectorAll('.nav-link');
+  const updateNav = (idx) => {
+    navLinks.forEach((l, i) => {
+      l.classList.toggle('active', i === idx);
+    });
+  };
+
+  // Section 1: Intro (Initial)
+  gsap.to("#s1", { opacity: 1, duration: 0 });
+  gsap.to("#s1 .left-target", { x: 0, duration: 0 });
+  gsap.to("#s1 .right-target", { x: 0, duration: 0 });
+
+  // === TRANSITION 1 -> 2 (Experience) ===
+  tl.to("#s1 .left-target", { x: -40, opacity: 0, duration: 1 }, 0)
+    .to("#s1 .right-target", { x: 40, opacity: 0, duration: 1 }, 0)
+    .to("#s1", { opacity: 0, duration: 1 }, 1)
+    .to(heroModel.rotation, { y: Math.PI * 0.45, x: 0.3, ease: "power2.inOut", duration: 2 }, 0)
+    .to("#s2", { opacity: 1, duration: 1, onStart: () => updateNav(1) }, 1.5)
+    .fromTo("#s2 .left-target", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 1.5)
+    .fromTo("#s2 .right-target", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 1.5)
+
+  // === TRANSITION 2 -> 3 (Stack) ===
+  tl.to("#s2 .left-target", { x: -40, opacity: 0, duration: 1 }, 3)
+    .to("#s2 .right-target", { x: 40, opacity: 0, duration: 1 }, 3)
+    .to("#s2", { opacity: 0, duration: 1 }, 3.5)
+    .to(heroModel.rotation, { y: -Math.PI * 0.35, x: -0.4, z: 0.15, ease: "power2.inOut", duration: 2 }, 3)
+    .to("#s3", { opacity: 1, duration: 1, onStart: () => updateNav(2) }, 4)
+    .fromTo("#s3 .left-target", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 4)
+    .fromTo("#s3 .right-target", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 4)
+
+  // === TRANSITION 3 -> 4 (Projects) ===
+  tl.to("#s3 .left-target", { x: -40, opacity: 0, duration: 1 }, 6)
+    .to("#s3 .right-target", { x: 40, opacity: 0, duration: 1 }, 6)
+    .to("#s3", { opacity: 0, duration: 1 }, 6.5)
+    .to(heroModel.rotation, { y: Math.PI * 0.8, x: 0.6, ease: "power2.inOut", duration: 2 }, 6)
+    .to("#s4", { opacity: 1, duration: 1, onStart: () => updateNav(3) }, 7)
+    .fromTo("#s4 .left-target", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 7)
+    .fromTo("#s4 .right-target", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 7)
+
+  // === TRANSITION 4 -> 5 (Reach) ===
+  tl.to("#s4 .left-target", { x: -40, opacity: 0, duration: 1 }, 9)
+    .to("#s4 .right-target", { x: 40, opacity: 0, duration: 1 }, 9)
+    .to("#s4", { opacity: 0, duration: 1 }, 9.5)
+    .to(heroModel.rotation, { y: -Math.PI * 1.2, x: -0.2, z: -0.1, ease: "power2.inOut", duration: 2 }, 9)
+    .to("#s5", { opacity: 1, duration: 1, onStart: () => updateNav(4) }, 10)
+    .fromTo("#s5 .left-target", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 10)
+    .fromTo("#s5 .right-target", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 10)
+
+  // === TRANSITION 5 -> 6 (Contact) ===
+  tl.to("#s5 .left-target", { x: -40, opacity: 0, duration: 1 }, 12)
+    .to("#s5 .right-target", { x: 40, opacity: 0, duration: 1 }, 12)
+    .to("#s5", { opacity: 0, duration: 1 }, 12.5)
+    .to(heroModel.rotation, { y: 0, x: 0, z: 0, ease: "power2.inOut", duration: 2 }, 12)
+    .to("#s6", { opacity: 1, duration: 1, onStart: () => updateNav(5) }, 13)
+    .fromTo("#s6 .left-target", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 13)
+    .fromTo("#s6 .right-target", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 1 }, 13)
+}
+
+
+/* Subtle breathing & cursor tracking to make the object feel physical */
+let curX = 0, curY = 0, targetX = 0, targetY = 0;
+document.addEventListener('mousemove', (e) => {
+  targetX = (e.clientX / innerWidth) * 2 - 1;
+  targetY = -(e.clientY / innerHeight) * 2 + 1;
+});
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  curX += (targetX - curX) * 0.05;
+  curY += (targetY - curY) * 0.05;
+  heroModel.position.y = Math.sin(t * 1.5) * 0.08;
+  heroModel.rotation.z = (curX * 0.06);
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>
