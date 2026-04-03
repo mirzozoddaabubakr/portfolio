@@ -34,9 +34,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className={`${fontHeader.variable} ${fontBody.variable} ${fontMono.variable}`}>
       <body className="antialiased font-body selection:bg-[#99ff33]/30 selection:text-white">
