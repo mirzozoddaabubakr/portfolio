@@ -14,6 +14,7 @@ export default function TerminalContact() {
     const email = formData.get("email") as string;
     const message = formData.get("message") as string;
     
+    // Static-compatible transition to the user's email client
     const mailtoUrl = `mailto:mirzozoddaabubakr@gmail.com?subject=Portfolio Inquiry from ${email}&body=${encodeURIComponent(message)}`;
     
     setTimeout(() => {
