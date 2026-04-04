@@ -6,21 +6,28 @@ import { cn } from "@/lib/utils";
 export default function TerminalContact() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("sending");
     
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
+    const data = {
+      email: formData.get("email"),
+      message: formData.get("message")
+    };
     
-    // Static-compatible transition to the user's email client
-    const mailtoUrl = `mailto:mirzozoddaabubakr@gmail.com?subject=Portfolio%20Inquiry%20from%20${email}&body=${encodeURIComponent(message)}`;
-    
-    setTimeout(() => {
-      window.location.href = mailtoUrl;
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      
+      if (!res.ok) throw new Error();
       setStatus("success");
-    }, 800);
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
