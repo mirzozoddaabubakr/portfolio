@@ -25,24 +25,28 @@ export class TextWall {
     this.group.position.z = -35; // Slightly closer to feel 'written on wall'
     this.mouse = new THREE.Vector2(0, 0);
     
-    // 🧱 DARKEST MONOCHROMATIC NIGHT BRICK WALL 🧱
+    // 🧱 DARKEST MONOCHROMATIC NIGHT BRICK WALL (LOD Strategy) 🧱
     const loader = new THREE.TextureLoader();
     const brickGeometry = new THREE.PlaneGeometry(120, 80, 1, 1);
 
-    const brickTexture = loader.load('/realistic_brick_texture.webp');
-    brickTexture.wrapS = brickTexture.wrapT = THREE.RepeatWrapping;
-    brickTexture.repeat.set(4, 2.5); 
-    
-    // Performance Tweak: Lower anisotropy for speed, especially on mobile
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    brickTexture.anisotropy = isMobile ? 2 : 4;
-    brickTexture.colorSpace = THREE.SRGBColorSpace;
-
+    // Load instantly-ready material first
     const brickMaterial = new THREE.MeshStandardMaterial({
-        map: brickTexture,
-        color: 0x1a1a1a,      
-        roughness: 1.0,       // Max roughness = less specular calculation
+        color: 0x0a0a0a,      // Absolute dark matte first
+        roughness: 1.0,
         metalness: 0.0,
+    });
+
+    // Texture hydrates asynchronously without blocking
+    loader.load('/realistic_brick_texture.webp', (texture) => {
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(4, 2.5); 
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        texture.anisotropy = isMobile ? 2 : 4;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        
+        brickMaterial.map = texture;
+        brickMaterial.color.set(0x1a1a1a); // Slightly brighter once textured
+        brickMaterial.needsUpdate = true;
     });
 
     this.wall = new THREE.Mesh(brickGeometry, brickMaterial);
@@ -114,12 +118,15 @@ export class TextWall {
 
         let alpha = 0;
         if (scrollProgress >= segStart && scrollProgress <= segEnd) {
-            // Stay fully visible for a plateau in the middle
+            // Plateau in the middle
             const innerDuration = segEnd - segStart;
             const fadeInEnd = segStart + innerDuration * 0.2;
             const fadeOutStart = segEnd - innerDuration * 0.2;
 
-            if (scrollProgress < fadeInEnd) {
+            if (i === 0 && scrollProgress < fadeInEnd) {
+                // Phase 1 (Intro) should be FULLY visible at the start
+                alpha = 1.0;
+            } else if (scrollProgress < fadeInEnd) {
                 alpha = THREE.MathUtils.smoothstep(scrollProgress, segStart, fadeInEnd);
             } else if (scrollProgress > fadeOutStart) {
                 alpha = 1 - THREE.MathUtils.smoothstep(scrollProgress, fadeOutStart, segEnd);

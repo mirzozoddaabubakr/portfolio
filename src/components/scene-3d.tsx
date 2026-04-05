@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextWall } from './text-wall';
@@ -16,6 +16,13 @@ export default function Scene3D() {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    // ✨ 1. SETUP LOADING MANAGER 🦾🤖✨
+    const loadingManager = new THREE.LoadingManager();
+    loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+      const progress = (itemsLoaded / itemsTotal) * 100;
+      window.dispatchEvent(new CustomEvent('3d-progress', { detail: progress }));
+    };
+
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
@@ -26,7 +33,7 @@ export default function Scene3D() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.000001; // Offset to avoid shader double precision warnings
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
@@ -39,12 +46,21 @@ export default function Scene3D() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
 
-    const exrLoader = new EXRLoader();
-    exrLoader.load('/studio.exr', (texture) => {
+    // ✨ 1. IMMEDIATE MURAL RENDER (Zero-Wait) 🦾🤖✨
+    const textWall = new TextWall(scene);
+    
+    // We start the GSAP engine immediately to drive the Mural,
+    // independent of the heavy 3D assets.
+    initGSAP(heroModel);
+
+    // ✨ 2. ASYNC HDR HYDRATION (82MB EXR -> 1.4MB HDR) 🦾🤖✨
+    const rgbeLoader = new RGBELoader(loadingManager);
+    rgbeLoader.load('/studio.hdr', (texture) => {
       texture.mapping = THREE.EquirectangularReflectionMapping;
       scene.environment = texture;
 
-      const gltfLoader = new GLTFLoader();
+      // ✨ 3. ASYNC HELMET HYDRATION 🦾🤖✨
+      const gltfLoader = new GLTFLoader(loadingManager);
       gltfLoader.load('/model.glb', (gltf) => {
         const obj = gltf.scene;
         const box = new THREE.Box3().setFromObject(obj);
@@ -61,17 +77,20 @@ export default function Scene3D() {
 
         obj.traverse((child: any) => {
           if (child.isMesh && child.material) {
-            child.material.envMapIntensity = 1.6;
+            child.material.envMapIntensity = 1.2;
             child.material.needsUpdate = true;
           }
         });
 
         heroModel.add(obj);
-        initGSAP(heroModel);
+
+        // Professional Fade-in once model is ready
+        gsap.fromTo(obj.scale, 
+          { x: 0, y: 0, z: 0 }, 
+          { x: obj.scale.x, y: obj.scale.y, z: obj.scale.z, duration: 1.2, ease: "power3.out" }
+        );
       });
     });
-
-    const textWall = new TextWall(scene);
 
     function initGSAP(model: THREE.Group) {
       const tl = gsap.timeline({

@@ -8,25 +8,20 @@ export default function PercentageLoader() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // High-Precision THREE.js Loading Manager
-    THREE.DefaultLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-      const p = Math.round((itemsLoaded / itemsTotal) * 100)
-      setProgress(p)
+    const handleProgress = (e: any) => {
+      const p = Math.round(e.detail);
+      setProgress(p);
       if (p >= 100) {
-        setTimeout(() => setLoading(false), 800)
+        setTimeout(() => setLoading(false), 800);
       }
-    }
+    };
 
-    // Fallback if no assets are found
-    const timer = setTimeout(() => {
-      if (progress < 100) {
-        setProgress(100)
-        setTimeout(() => setLoading(false), 500)
-      }
-    }, 3000)
+    window.addEventListener('3d-progress', handleProgress);
 
-    return () => clearTimeout(timer)
-  }, [progress])
+    return () => {
+      window.removeEventListener('3d-progress', handleProgress);
+    };
+  }, []);
 
   if (!loading) return null
 
