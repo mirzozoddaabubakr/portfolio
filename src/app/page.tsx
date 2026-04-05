@@ -3,12 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Scene3D from '@/components/scene-3d';
-import HUD from '@/components/hud';
-import Viewfinder from '@/components/viewfinder';
-import TechProfile from '@/components/tech-profile';
-import TerminalContact from '@/components/terminal-contact';
-import { useMagnetic } from '@/hooks/use-magnetic';
+import dynamic from 'next/dynamic';
+
+const Scene3D = dynamic(() => import('@/components/scene-3d'), { ssr: false });
+const HUD = dynamic(() => import('@/components/hud'), { ssr: false });
+const Viewfinder = dynamic(() => import('@/components/viewfinder'), { ssr: false });
+const TechProfile = dynamic(() => import('@/components/tech-profile'), { ssr: false });
+const TerminalContact = dynamic(() => import('@/components/terminal-contact'), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,58 +26,56 @@ export default function Home() {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    const sections = gsap.utils.toArray<HTMLElement>('.oryzo-section');
-    
-    // Initial State: Explicitly hide everything except Section 0
-    gsap.set(sections, { autoAlpha: 0 });
-    gsap.set(sections[0], { autoAlpha: 1 });
+    let ctx = gsap.context(() => {
+      requestAnimationFrame(() => {
+        const sections = gsap.utils.toArray<HTMLElement>('.oryzo-section');
+        
+        // Initial State: Explicitly hide everything except Section 0
+        gsap.set(sections, { autoAlpha: 0 });
+        gsap.set(sections[0], { autoAlpha: 1 });
 
-    const masterTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#scroll-space",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.2,
-      }
-    });
+        const masterTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#scroll-space",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.2,
+          }
+        });
 
-    // 7 Segments (0 to 6). 
-    // We want content N to FADE OUT before N+1 starts to FADE IN.
-    
-    sections.forEach((section, i) => {
-      if (i === 0) return; // Skip Intro
-      
-      const current = section;
-      const prev = sections[i-1];
-      const startTime = i;
+        sections.forEach((section, i) => {
+          if (i === 0) return;
+          
+          const current = section;
+          const prev = sections[i-1];
+          const startTime = i;
 
-      const currentTargets = current.querySelectorAll('.right-target');
+          const currentTargets = current.querySelectorAll('.right-target');
 
-      // 🛑 1. OLD PAGE CLOSES FIRST (Fade out slightly before the start of the next phase)
-      masterTl.to(prev, { 
-        autoAlpha: 0, 
-        duration: 0.4, 
-        ease: "power2.inOut" 
-      }, startTime - 0.2);
-              
-      // ✨ 2. NEW PAGE STARTS TO OPEN
-      masterTl.to(current, { 
-        autoAlpha: 1, 
-        duration: 0.5, 
-        ease: "power2.inOut" 
-      }, startTime);
-              
-      // 🚀 3. STARK LOCK: Target elements slide in after background is ready
-      masterTl.fromTo(currentTargets, 
-        { x: 80, autoAlpha: 0 }, 
-        { x: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" }, 
-        startTime + 0.1
-      );
-    });
+          masterTl.to(prev, { 
+            autoAlpha: 0, 
+            duration: 0.4, 
+            ease: "power2.inOut" 
+          }, startTime - 0.2);
+                  
+          masterTl.to(current, { 
+            autoAlpha: 1, 
+            duration: 0.5, 
+            ease: "power2.inOut" 
+          }, startTime);
+                  
+          masterTl.fromTo(currentTargets, 
+            { x: 80, autoAlpha: 0 }, 
+            { x: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" }, 
+            startTime + 0.1
+          );
+        });
+      });
+    }, containerRef);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      ctx.revert();
     };
   }, []);
 

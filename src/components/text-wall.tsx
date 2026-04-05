@@ -31,14 +31,17 @@ export class TextWall {
 
     const brickTexture = loader.load('/realistic_brick_texture.webp');
     brickTexture.wrapS = brickTexture.wrapT = THREE.RepeatWrapping;
-    brickTexture.repeat.set(4, 2.5); // Tighter tiling for more texture
-    brickTexture.anisotropy = 16;
+    brickTexture.repeat.set(4, 2.5); 
+    
+    // Performance Tweak: Lower anisotropy for speed, especially on mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    brickTexture.anisotropy = isMobile ? 2 : 4;
     brickTexture.colorSpace = THREE.SRGBColorSpace;
 
     const brickMaterial = new THREE.MeshStandardMaterial({
         map: brickTexture,
-        color: 0x1a1a1a,      // 🌙 MAX DARK — the 'night' feel
-        roughness: 0.95,
+        color: 0x1a1a1a,      
+        roughness: 1.0,       // Max roughness = less specular calculation
         metalness: 0.0,
     });
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import Typewriter from './typewriter';
 
@@ -62,13 +63,13 @@ export default function TechProfile() {
         <div className="absolute inset-[18px] overflow-hidden rounded-[1.8rem] border border-white/5 shadow-[inset_0_0_30px_rgba(0,0,0,0.8)]">
           
           {/* Base image stripped of original colors, high contrast */}
-          <img 
+          <Image 
              src="/stark_placeholder.png?v=3" 
              alt="Stark Profile" 
-             className="w-full h-full object-cover opacity-90 filter grayscale contrast-125 brightness-110 mix-blend-luminosity"
-             onError={(e) => {
-                 (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%230a0a0a" width="100" height="100"/><text x="50" y="50" font-family="monospace" font-size="10" fill="%2300ffff" text-anchor="middle" alignment-baseline="middle">NO SIGNAL</text></svg>';
-             }}
+             fill
+             priority
+             sizes="(max-width: 768px) 120px, 300px"
+             className="object-cover opacity-90 filter grayscale contrast-125 brightness-110 mix-blend-luminosity"
           />
           
           {/* Holographic Duotone Color Tint Overlay */}
