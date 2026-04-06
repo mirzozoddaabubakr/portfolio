@@ -175,4 +175,13 @@ body::after {
     background-color: rgba(153, 255, 51, 0.1);
     border: 1px dotted var(--accent);
   }
+
+  @keyframes pulse-placeholder {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.4; }
+  }
+
+  .animate-pulse-placeholder::placeholder {
+    animation: pulse-placeholder 1s infinite steps(2);
+  }
 }

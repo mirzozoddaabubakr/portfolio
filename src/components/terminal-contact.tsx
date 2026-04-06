@@ -54,8 +54,8 @@ export default function TerminalContact() {
               type="email" 
               name="email" 
               required 
-              placeholder="ENTER_SENDER_NODE // EMAIL"
-              className="w-full bg-black/40 border border-white/10 p-3 text-[0.65rem] text-white tracking-widest outline-none transition-colors focus:border-[#00ffff]/60 placeholder:text-white/20"
+              placeholder="ENTER_SENDER_NODE // EMAIL_"
+              className="w-full bg-black/40 border border-white/10 p-3 text-[0.65rem] text-white tracking-widest outline-none transition-colors focus:border-[#00ffff]/60 placeholder:text-white/20 animate-pulse-placeholder"
             />
             <div className="absolute top-0 left-0 w-[2px] h-full bg-[#ff00ff] scale-y-0 group-focus-within:scale-y-100 transition-transform origin-top" />
           </div>
@@ -65,8 +65,8 @@ export default function TerminalContact() {
               name="message" 
               required 
               rows={4} 
-              placeholder="INPUT_DATA // MESSAGE"
-              className="w-full bg-black/40 border border-white/10 p-3 text-[0.65rem] text-white tracking-widest outline-none resize-none transition-colors focus:border-[#00ffff]/60 placeholder:text-white/20"
+              placeholder="INPUT_DATA // MESSAGE_"
+              className="w-full bg-black/40 border border-white/10 p-3 text-[0.65rem] text-white tracking-widest outline-none resize-none transition-colors focus:border-[#00ffff]/60 placeholder:text-white/20 animate-pulse-placeholder"
             />
             <div className="absolute top-0 left-0 w-[2px] h-full bg-[#ff00ff] scale-y-0 group-focus-within:scale-y-100 transition-transform origin-top" />
           </div>
