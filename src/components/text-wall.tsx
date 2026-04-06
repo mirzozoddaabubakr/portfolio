@@ -28,18 +28,20 @@ export class TextWall {
     this.group.position.z = -35; 
     this.mouse = new THREE.Vector2(0, 0);
     
-    // 🧱 1. PROCEDURAL HEXAGONAL GRID WALL 🧱
-    const hexTexture = this.createHexTexture();
+    // 🧱 1. PREMIUM MECHANICAL TECH WALL 🧱
+    const loader = new THREE.TextureLoader();
+    const techTexture = loader.load('/tech_wall.webp');
+    techTexture.wrapS = techTexture.wrapT = THREE.RepeatWrapping;
+    techTexture.repeat.set(4, 2.5);
+    
     const wallGeometry = new THREE.PlaneGeometry(150, 100, 1, 1);
     const wallMaterial = new THREE.MeshStandardMaterial({
-        color: 0x050505,
-        map: hexTexture,
-        transparent: true,
-        opacity: 0.8,
-        roughness: 0.8,
-        metalness: 0.2,
+        color: 0x222222,
+        map: techTexture,
+        roughness: 0.3,
+        metalness: 0.6,
         emissive: 0x00ffff,
-        emissiveIntensity: 0.05
+        emissiveIntensity: 0.02
     });
 
     this.wall = new THREE.Mesh(wallGeometry, wallMaterial);
@@ -55,50 +57,6 @@ export class TextWall {
 
     this.initSigns();
     this.bindEvents();
-  }
-
-  createHexTexture() {
-    const size = 512;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d')!;
-    
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, size, size);
-    
-    const hexRadius = 24;
-    const hexHeight = Math.sqrt(3) * hexRadius;
-    const hexWidth = 2 * hexRadius;
-    
-    ctx.strokeStyle = '#00ffff';
-    ctx.lineWidth = 1;
-    ctx.globalAlpha = 0.3;
-    
-    for (let y = 0; y < size + hexHeight; y += hexHeight * 0.75) {
-      for (let x = 0; x < size + hexWidth; x += hexWidth) {
-        const cx = (Math.floor(y / (hexHeight * 0.75)) % 2 === 0) ? x : x + hexWidth / 2;
-        this.drawHex(ctx, cx, y, hexRadius);
-      }
-    }
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(6, 4);
-    return texture;
-  }
-
-  drawHex(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-        const angle = (Math.PI / 3) * i + Math.PI / 6;
-        const px = x + r * Math.cos(angle);
-        const py = y + r * Math.sin(angle);
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-    }
-    ctx.closePath();
-    ctx.stroke();
   }
 
   createDataStream() {
@@ -295,6 +253,13 @@ export class TextWall {
 
     this.group.rotation.y = this.mouse.x * 0.03;
     this.group.rotation.x = -this.mouse.y * 0.03;
+
+    // 🔦 Dynamic Scanning Lights for Wall Depth 🔦
+    this.glowLights.forEach((light, i) => {
+        const offset = (i / this.glowLights.length) * Math.PI * 2;
+        light.position.x = Math.sin(elapsedTime * 0.5 + offset) * 30;
+        light.position.y = Math.cos(elapsedTime * 0.3 + offset) * 20;
+    });
   }
 
   destroy() {
