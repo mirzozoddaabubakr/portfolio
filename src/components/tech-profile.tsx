@@ -64,12 +64,12 @@ export default function TechProfile() {
           
           {/* Base image stripped of original colors, high contrast */}
           <Image 
-             src="/stark_placeholder.png?v=3" 
-             alt="Stark Profile" 
+             src="/me.webp" 
+             alt="Abubakr Mirzozoda" 
              fill
              priority
              sizes="(max-width: 768px) 120px, 300px"
-             className="object-cover opacity-90 filter grayscale contrast-125 brightness-110 mix-blend-luminosity"
+             className="object-cover opacity-95 filter grayscale contrast-110 brightness-105 mix-blend-luminosity"
           />
           
           {/* Holographic Duotone Color Tint Overlay */}
@@ -98,11 +98,11 @@ export default function TechProfile() {
 
         {/* Status Text Overlays - Modern Glass Placement */}
         <div className="absolute bottom-6 left-6 max-w-[80%] font-mono text-[0.55rem] text-white leading-relaxed tracking-[0.2em] opacity-90 backdrop-blur-md bg-black/40 p-2.5 rounded border border-[#00ffff]/20 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-          <div className="text-[#ff00ff] font-bold mb-1">ID_VERIFIED // OMEGA</div>
+          <div className="text-[#ff00ff] font-bold mb-1">ID_VERIFIED // ACTIVE</div>
           <div className="h-[1.2rem] flex items-center">
-             <Typewriter texts={['print("ABUBAKR M.");', 'sys.boot(ABUBAKR);', 'connect("ABUBAKR_M");']} />
+             <Typewriter texts={['sys.boot("ABUBAKR");', 'role: FULL-STACK DEV', 'loc: TAJIKISTAN // TJ']} />
           </div>
-          <div className="text-white/50 text-[0.45rem]">SYS.SECURE_TRANSMISSION</div>
+          <div className="text-white/50 text-[0.45rem]">FREELANCE · 2 YRS EXP · MIT-OPEN</div>
         </div>
         
         {/* Decorative Data Bars */}

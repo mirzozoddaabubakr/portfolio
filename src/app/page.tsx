@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 
 const Scene3D = dynamic(() => import('@/components/scene-3d'), { ssr: false });
@@ -11,136 +10,107 @@ const Viewfinder = dynamic(() => import('@/components/viewfinder'), { ssr: false
 const TechProfile = dynamic(() => import('@/components/tech-profile'), { ssr: false });
 const TerminalContact = dynamic(() => import('@/components/terminal-contact'), { ssr: false });
 
-gsap.registerPlugin(ScrollTrigger);
+const TOTAL_PHASES = 7; // 0 = intro, 1-6 = content
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
+    // Cursor follow
     const handleMouseMove = (e: MouseEvent) => {
       const cursor = document.getElementById('cursor');
-      if (cursor) {
-        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
-      }
+      if (cursor) gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    let ctx = gsap.context(() => {
-      requestAnimationFrame(() => {
-        const sections = gsap.utils.toArray<HTMLElement>('.oryzo-section');
-        
-        // Initial State: Explicitly hide everything except Section 0
-        gsap.set(sections, { autoAlpha: 0 });
-        gsap.set(sections[0], { autoAlpha: 1 });
+    // Simple scroll-based section reveal — no GSAP ScrollTrigger needed
+    const handleScroll = () => {
+      const scrollPos = window.scrollY;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = Math.min(scrollPos / totalHeight, 1);
+      const idx = Math.min(Math.floor(pct * TOTAL_PHASES), TOTAL_PHASES - 1);
+      setActiveSection(idx);
+    };
 
-        const masterTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: "#scroll-space",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1.2,
-          }
-        });
-
-        sections.forEach((section, i) => {
-          if (i === 0) return;
-          
-          const current = section;
-          const prev = sections[i-1];
-          const startTime = i;
-
-          const currentTargets = current.querySelectorAll('.right-target');
-
-          masterTl.to(prev, { 
-            autoAlpha: 0, 
-            duration: 0.4, 
-            ease: "power2.inOut" 
-          }, startTime - 0.2);
-                  
-          masterTl.to(current, { 
-            autoAlpha: 1, 
-            duration: 0.5, 
-            ease: "power2.inOut" 
-          }, startTime);
-                  
-          masterTl.fromTo(currentTargets, 
-            { x: 80, autoAlpha: 0 }, 
-            { x: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out" }, 
-            startTime + 0.1
-          );
-        });
-      });
-    }, containerRef);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Run once on mount
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      ctx.revert();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  // Section is visible = opacity 1, otherwise 0. Transitions handled by CSS.
+  const sectionStyle = (idx: number): React.CSSProperties => ({
+    opacity: activeSection === idx ? 1 : 0,
+    visibility: activeSection === idx ? 'visible' : 'hidden',
+    transition: 'opacity 0.5s ease, visibility 0.5s ease',
+    pointerEvents: activeSection === idx ? 'auto' : 'none',
+  });
+
   return (
-    <main ref={containerRef} className="relative min-h-screen">
+    <main className="relative min-h-screen">
       <div className="vignette" />
       <Viewfinder />
-      
+
       <div id="cursor" className="fixed top-0 left-0 w-1.5 h-1.5 bg-[#00ffff] rounded-full pointer-events-none z-[10000] -translate-x-1/2 -translate-y-1/2" />
-      
+
       <HUD />
       <Scene3D />
-      
+
       <div id="scroll-space" className="h-[700vh] w-full" />
 
       <div id="overlay" className="fixed inset-0 pointer-events-none z-[100]">
 
-        {/* 0. INTRO (Blank) */}
-        <section className="oryzo-section pointer-events-none" id="s0" />
+        {/* 0. INTRO */}
+        <section className="oryzo-section" id="s0" style={sectionStyle(0)} />
 
-        {/* 1. GENESIS */}
-        <section className="oryzo-section" id="s1">
+        {/* 1. FULL-STACK DEVELOPER */}
+        <section className="oryzo-section" id="s1" style={sectionStyle(1)}>
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="pointer-events-none mb-8 md:mb-0">
-              <h1 className="h-massive">SYSTEM<br/>KINETIK</h1>
+              <h1 className="h-massive">FULL-STACK<br/>DEVELOPER</h1>
               <div className="metadata">/ 01.INITIATE . ABUBAKR_MIRZOZODA</div>
             </div>
-            <div className="right-target text-left md:text-right">
-              <p className="metadata mb-2 md:mb-4 text-[#00ffff]">/ CONCEPT_PHASE</p>
-              <p className="p-desc md:ml-auto">Engineering monolithic digital architectures through high-fidelity scrollytelling and volumetric mural typography.</p>
+            <div className="text-left md:text-right" style={{ transform: activeSection === 1 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 1 ? 1 : 0 }}>
+              <p className="metadata mb-2 md:mb-4 text-[#00ffff]">/ FREELANCE . TAJIKISTAN</p>
+              <p className="p-desc md:ml-auto">~2 years building responsive, modern websites and web applications — from sleek frontends to production-grade backends. Focused on clean design, performance, and bulletproof functionality.</p>
             </div>
           </div>
         </section>
 
-        {/* 2. RESEARCH */}
-        <section className="oryzo-section" id="s2">
+        {/* 2. FREELANCE ENGINEER */}
+        <section className="oryzo-section" id="s2" style={sectionStyle(2)}>
           <div className="w-full flex flex-row justify-between items-start md:items-center gap-4 md:gap-12">
             <div className="order-last md:order-first flex-shrink-0 pointer-events-auto">
                <div className="w-[120px] h-[160px] md:w-[300px] md:h-[400px]">
                  <TechProfile />
                </div>
             </div>
-            <div className="flex-1 text-left md:text-right right-target">
-              <p className="metadata mb-1.5 md:hidden text-[#ff00ff]">/ 02 · RESEARCH</p>
-              <h1 className="h-massive">RESEARCH<br className="hidden md:block" /> REVOLUTION</h1>
-              <div className="metadata hidden md:block">/ 02.RESEARCH . HISTORY</div>
+            <div className="flex-1 text-left md:text-right" style={{ transform: activeSection === 2 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 2 ? 1 : 0 }}>
+              <p className="metadata mb-1.5 md:hidden text-[#ff00ff]">/ 02 · EXPERIENCE</p>
+              <h1 className="h-massive">FREELANCE<br className="hidden md:block" /> ENGINEER</h1>
+              <div className="metadata hidden md:block">/ 02.EXPERIENCE . 2023—PRESENT</div>
               <p className="metadata mt-2 mb-4 text-[#ff00ff] hidden md:block">/ CORE_DEVELOPMENT</p>
-              <p className="p-desc md:ml-auto mb-4">High-performance storefronts and custom web modules (2023 — PRES).</p>
+              <p className="p-desc md:ml-auto mb-4">Portfolio sites, Shopify stores, custom frontend UIs, backend API integrations, and performance-optimised web solutions for a growing international client base.</p>
               <div className="inline-block md:block mt-2 md:mt-8 p-1.5 md:p-3 border border-dotted border-[#ff00ff]/40 text-[#ff00ff] text-[0.45rem] md:text-[0.6rem] font-bold tracking-widest uppercase">
-                STATUS: ACTIVE_COLLABORATION
+                STATUS: OPEN_TO_COLLABORATION
               </div>
             </div>
           </div>
         </section>
 
         {/* 3. STACK */}
-        <section className="oryzo-section" id="s3">
+        <section className="oryzo-section" id="s3" style={sectionStyle(3)}>
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
               <h1 className="h-massive">THE<br/>CORE STACK</h1>
               <div className="metadata">/ 03.STACK . MODULES</div>
             </div>
-            <div className="right-target w-full md:w-auto">
-              <div className="grid grid-cols-3 md:grid-cols-2 gap-2 md:gap-4 mt-4 md:mt-8 md:w-[320px] md:ml-auto pointer-events-auto">
-                {['REACT','GSAP','THREE.JS','NEXT.JS','NODE','MONGODB'].map(s => (
+            <div className="w-full md:w-auto" style={{ transform: activeSection === 3 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 3 ? 1 : 0 }}>
+              <div className="grid grid-cols-3 gap-2 md:gap-4 mt-4 md:mt-8 md:w-[360px] md:ml-auto pointer-events-auto">
+                {['HTML5','CSS3','JAVASCRIPT','REACT.JS','NEXT.JS','NODE.JS','EXPRESS','MONGODB','SHOPIFY'].map(s => (
                   <div key={s} className="p-2 md:p-4 border border-white/10 text-[0.5rem] md:text-[0.65rem] font-bold tracking-wider md:tracking-[0.2em] uppercase text-white/50 md:text-white/60 hover:text-[#00ffff] hover:border-[#00ffff]/40 transition-all text-center md:text-left">{s}</div>
                 ))}
               </div>
@@ -149,27 +119,27 @@ export default function Home() {
         </section>
 
         {/* 4. WORKS */}
-        <section className="oryzo-section" id="s4">
+        <section className="oryzo-section" id="s4" style={sectionStyle(4)}>
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-6 md:mb-0">
               <h1 className="h-massive">SELECTED<br/>WORKS</h1>
               <div className="metadata">/ 04.WORKS . ARCHITECTURE</div>
             </div>
-            <div className="right-target text-left md:text-right">
+            <div className="text-left md:text-right" style={{ transform: activeSection === 4 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 4 ? 1 : 0 }}>
               <p className="metadata mb-2 md:mb-4 text-[#ff00ff]">/ PROJECT_GALLERY</p>
-              <p className="p-desc md:ml-auto">From world-class portfolio engines to secure digital libraries and custom e-commerce.</p>
+              <p className="p-desc md:ml-auto">Responsive portfolio engines, customised Shopify storefronts, digital libraries with secure readers, and bespoke full-stack web apps for clients worldwide.</p>
             </div>
           </div>
         </section>
 
         {/* 5. GLOBAL */}
-        <section className="oryzo-section" id="s5">
+        <section className="oryzo-section" id="s5" style={sectionStyle(5)}>
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
               <h1 className="h-massive">GLOBALLY<br/>SCALED</h1>
               <div className="metadata">/ 05.GLOBAL . NETWORK</div>
             </div>
-            <div className="right-target w-full md:w-auto text-left md:text-right">
+            <div className="w-full md:w-auto text-left md:text-right" style={{ transform: activeSection === 5 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 5 ? 1 : 0 }}>
               <p className="metadata mb-4 text-[#00ffff] hidden md:block">/ LANGUAGE_MATRIX</p>
               <div className="grid grid-cols-3 gap-x-4 md:gap-x-12 gap-y-3 md:gap-y-4 md:ml-auto">
                 {[['TAJ','NAT.'],['PER','C2'],['ENG','C1'],['RUS','C1'],['SPA','A1'],['POL','A1']].map(([lang, level]) => (
@@ -184,15 +154,15 @@ export default function Home() {
         </section>
 
         {/* 6. INITIATE */}
-        <section className="oryzo-section" id="s6">
+        <section className="oryzo-section" id="s6" style={sectionStyle(6)}>
           <div className="w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
               <h1 className="h-massive">INITIATE<br/>PROJECT</h1>
               <div className="metadata">/ 06.TERMINAL . END_STEP</div>
             </div>
-            <div className="right-target text-left md:text-right w-full md:w-auto">
+            <div className="text-left md:text-right w-full md:w-auto" style={{ transform: activeSection === 6 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 6 ? 1 : 0 }}>
               <p className="metadata mb-2 md:mb-4 text-[#ff00ff] hidden md:block">/ SECURE_CONNECTION_READY</p>
-              <p className="p-desc mb-6 md:mb-8 md:ml-auto hidden md:block">Available for high-fidelity collaborations and robust digital architectures. Transmit your coordinates below.</p>
+              <p className="p-desc mb-6 md:mb-8 md:ml-auto hidden md:block">Available for freelance projects, long-term collaborations, and full-time remote roles. Drop your coordinates — let&apos;s build something exceptional.</p>
               <TerminalContact />
             </div>
           </div>

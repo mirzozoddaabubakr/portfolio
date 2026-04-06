@@ -3,12 +3,12 @@ import { Text } from 'troika-three-text'
 
 // ✨ 6 NEON SIGNS — ONE PER SCROLL PAGE — "WRITTEN ON THE WALL" ✨
 const NEON_SIGNS = [
-  { text: "SYSTEM\nKINETIK",       color: 0x00ffff, size: 4.0, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },  // Phase 1
-  { text: "RESEARCH\nREVOLUTION",  color: 0xff00ff, size: 4.5, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },  // Phase 2
-  { text: "THE\nCORE STACK",       color: 0x99ff33, size: 4.0, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },  // Phase 3
-  { text: "SELECTED\nWORKS",       color: 0x00ffff, size: 4.0, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },  // Phase 4
-  { text: "GLOBALLY\nSCALED",      color: 0xff00ff, size: 4.5, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },  // Phase 5
-  { text: "INITIATE\nPROJECT",     color: 0x99ff33, size: 4.0, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },  // Phase 6
+  { text: "FULL-STACK\nDEVELOPER",    color: 0x00ffff, size: 4.0, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },  // Phase 1
+  { text: "FREELANCE\nENGINEER",       color: 0xff00ff, size: 4.5, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },  // Phase 2
+  { text: "THE\nCORE STACK",           color: 0x99ff33, size: 4.0, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },  // Phase 3
+  { text: "SELECTED\nWORKS",           color: 0x00ffff, size: 4.0, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },  // Phase 4
+  { text: "GLOBALLY\nSCALED",          color: 0xff00ff, size: 4.5, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },  // Phase 5
+  { text: "INITIATE\nPROJECT",         color: 0x99ff33, size: 4.0, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },  // Phase 6
 ];
 
 export class TextWall {
@@ -81,6 +81,11 @@ export class TextWall {
         mesh.transparent = true;
         
         (mesh as any)._config = config;
+        (mesh as any)._isSynced = false;
+
+        mesh.onSync = () => {
+          (mesh as any)._isSynced = true;
+        };
         
         this.signs.push(mesh);
         this.group.add(mesh);
@@ -112,6 +117,8 @@ export class TextWall {
     const totalSigns = NEON_SIGNS.length;
 
     this.signs.forEach((mesh: any, i: number) => {
+        if (!mesh._isSynced) return;
+
         const segStart = i / totalSigns;
         const segEnd = (i + 1) / totalSigns;
         const segMid = (segStart + segEnd) / 2;

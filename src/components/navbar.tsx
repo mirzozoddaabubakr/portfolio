@@ -20,14 +20,14 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = ['INTRO', 'EXPERIENCE', 'STACK', 'PROJECTS', 'REACH', 'CONTACT'];
+  const navLinks = ['HOME', 'EXPERIENCE', 'STACK', 'WORKS', 'GLOBAL', 'CONTACT'];
 
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 flex justify-between items-center p-6 md:p-10 md:px-[60px] z-[500] pointer-events-auto">
         <div className="flex flex-col group cursor-pointer">
           <div className="text-[1.5rem] md:text-[1.8rem] font-black tracking-[-0.05em] text-white leading-none">AB</div>
-          <div className="text-[0.5rem] md:text-[0.6rem] font-bold tracking-[0.4em] uppercase text-[#99ff33] mt-1">RESEARCH.V1</div>
+          <div className="text-[0.5rem] md:text-[0.6rem] font-bold tracking-[0.4em] uppercase text-[#99ff33] mt-1">PORTFOLIO.V4</div>
         </div>
         
         {/* 💻 DESKTOP NAV 💻 */}

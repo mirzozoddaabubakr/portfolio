@@ -9,8 +9,9 @@ const fontBody = Space_Grotesk({ subsets: ["latin"], weight: ["300", "400", "600
 const fontMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "ABUBAKR MIRZOZODA | Creative Engineer",
-  description: "High-fidelity digital architectures and 3D scrollytelling. Professional creative engineer portfolio for Abubakr Mirzozoda.",
+  metadataBase: new URL("https://mirzozoddaabubakr.vercel.app"),
+  title: "ABUBAKR MIRZOZODA | Full-Stack Developer",
+  description: "Freelance full-stack web developer from Tajikistan — ~2 years building responsive portfolios, Shopify storefronts, and custom web solutions. Available for remote work worldwide.",
   openGraph: {
     title: "ABUBAKR MIRZOZODA | Creative Engineer",
     description: "Photorealistic 3D experiences and technical web architecture.",
@@ -41,6 +42,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fontHeader.variable} ${fontBody.variable} ${fontMono.variable}`}>
+      <head>
+        <link rel="preload" href="/model.glb" as="fetch" crossOrigin="anonymous" />
+        <link rel="preload" href="/studio.hdr" as="fetch" crossOrigin="anonymous" />
+        <link rel="preload" href="/me.webp" as="image" />
+      </head>
       <body className="antialiased font-body selection:bg-[#99ff33]/30 selection:text-white">
         <SmoothScroll>
           <PercentageLoader />
