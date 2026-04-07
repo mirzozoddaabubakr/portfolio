@@ -34,7 +34,7 @@ export default function Scene3D() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.000001; // Offset to avoid shader double precision warnings
+    renderer.toneMappingExposure = 1.0; 
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
@@ -83,7 +83,9 @@ export default function Scene3D() {
         
         obj.traverse((child: any) => {
           if (child.isMesh && child.material) {
-            child.material.envMapIntensity = 1.2;
+            child.material.envMapIntensity = 0.6;
+            child.material.transparent = true;
+            child.material.opacity = 0.25;
             child.material.needsUpdate = true;
           }
         });

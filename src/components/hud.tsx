@@ -88,8 +88,8 @@ export default function HUD() {
         "absolute top-[-90px] right-2 text-right opacity-90 backdrop-blur-xl bg-black/40 p-2.5 border-l-2 border-[#00ffff] rounded shadow-[0_0_15px_rgba(0,255,255,0.2)] transition-all duration-500",
         activeIdx === 0 ? "translate-x-20 opacity-0" : "translate-x-0 opacity-100"
       )}>
-        <div className="text-[0.55rem] font-mono text-[#00ffff] tracking-[0.4em] uppercase mb-1">STARK.ARCHIVE_SYNC</div>
-        <div className="text-[0.45rem] font-mono text-white/70 tracking-[0.2em]">{`NODE_${Math.max(1, activeIdx).toString().padStart(2, '0')} // SECURE`}</div>
+        <div className="text-[0.55rem] font-mono text-[#00ffff] tracking-[0.4em] uppercase mb-1">ABUBAKR.PORTFOLIO</div>
+        <div className="text-[0.45rem] font-mono text-white/70 tracking-[0.2em]">{`SECTION_${Math.max(1, activeIdx).toString().padStart(2, '0')} // PROTECTED`}</div>
       </div>
 
       {/* Track lines */}
@@ -140,10 +140,10 @@ export default function HUD() {
                   <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#00ffff]/80" />
                   <div className="backdrop-blur-sm bg-[#00ffff]/5 p-1.5 border border-[#00ffff]/20 rounded-sm">
                     <div className="text-[0.55rem] font-mono tracking-[0.2em] text-[#00ffff] text-right drop-shadow-[0_0_5px_rgba(0,255,255,0.5)] uppercase">
-                      {['SYSTEM', 'RESEARCH', 'STACK', 'WORKS', 'GLOBAL', 'INITIATE'][i]}_PHASE
+                      {['OVERVIEW', 'RESEARCH', 'STACK', 'GALLERY', 'NETWORK', 'CONTACT'][i]}_SECTION
                     </div>
                     <div className="text-[0.4rem] font-mono tracking-widest text-[#ff00ff] text-right uppercase mt-1 animate-pulse">
-                      {Math.floor(progress * 100)}% // DEPLOYING
+                      {Math.floor(progress * 100)}% // COMPLETE
                     </div>
                   </div>
                 </div>
@@ -158,8 +158,8 @@ export default function HUD() {
         "absolute bottom-[-90px] right-2 text-right opacity-90 mt-8 backdrop-blur-xl bg-black/40 p-2.5 border-r-2 border-[#ff00ff] rounded shadow-[0_0_15px_rgba(255,0,255,0.2)] transition-all duration-500",
         activeIdx === 0 ? "translate-x-20 opacity-0" : "translate-x-0 opacity-100"
       )}>
-        <div className="text-[0.45rem] font-mono text-white/50 tracking-[0.3em] uppercase">ABSOLUTE_VECTOR</div>
-        <div className="text-[0.5rem] font-mono text-[#ff00ff] tracking-[0.2em] mt-1">{`X_${Math.floor(pageRotation*999).toString().padStart(3,'0')} // Z_199`}</div>
+        <div className="text-[0.45rem] font-mono text-white/50 tracking-[0.3em] uppercase">SYSTEM_STATE</div>
+        <div className="text-[0.5rem] font-mono text-[#ff00ff] tracking-[0.2em] mt-1">{`X_${Math.floor(pageRotation*999).toString().padStart(3,'0')} // L01`}</div>
       </div>
     </div>
   );

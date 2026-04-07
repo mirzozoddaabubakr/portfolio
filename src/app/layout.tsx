@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Cinzel, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Cinzel, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
 import PercentageLoader from "@/components/loader";
 
 const fontHeader = Cinzel({ subsets: ["latin"], weight: ["400", "700", "900"], variable: "--font-header" });
 const fontBody = Space_Grotesk({ subsets: ["latin"], weight: ["300", "400", "600"], variable: "--font-body" });
-const fontMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mirzozoddaabubakr.vercel.app"),
@@ -41,13 +40,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fontHeader.variable} ${fontBody.variable} ${fontMono.variable}`}>
+    <html lang="en" className={`${fontHeader.variable} ${fontBody.variable}`}>
       <head>
         <link rel="preload" href="/model.glb" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/studio.hdr" as="fetch" crossOrigin="anonymous" />
         <link rel="preload" href="/me.webp" as="image" />
       </head>
-      <body className="antialiased font-body selection:bg-[#99ff33]/30 selection:text-white">
+      <body className="antialiased font-body selection:bg-[#00ffff]/30 selection:text-white">
         <SmoothScroll>
           <PercentageLoader />
           {children}

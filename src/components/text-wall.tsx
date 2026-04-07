@@ -1,14 +1,16 @@
 import * as THREE from 'three'
 import { Text } from 'troika-three-text'
 
-// ✨ 6 NEON SIGNS — ONE PER SCROLL PAGE ✨
+// ✨ 6 NEON SIGNS — UNIFIED TYPOGRAPHY ✨
+const FONT_URL = 'https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkFtoMM3T6rjFMXNX70_aNcZA.woff';
+
 const NEON_SIGNS = [
-  { text: "FULL-STACK\nDEVELOPER",    color: 0x00ffff, size: 3.5, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },
-  { text: "FREELANCE\nENGINEER",       color: 0xff00ff, size: 4.0, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },
-  { text: "THE\nCORE STACK",           color: 0x99ff33, size: 3.5, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },
-  { text: "SELECTED\nWORKS",           color: 0x00ffff, size: 3.5, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },
-  { text: "GLOBALLY\nSCALED",          color: 0xff00ff, size: 4.0, font: 'https://fonts.gstatic.com/s/fredokaone/v13/v0z7df9P_VAdCnS376A2_H9L-92R.woff' },
-  { text: "INITIATE\nPROJECT",         color: 0x99ff33, size: 3.5, font: 'https://fonts.gstatic.com/s/luckiestguy/v15/_v7pSd_q6NBy9idpT_z_T7m3N0f6.woff' },
+  { text: "FULL-STACK\nDEVELOPER",    color: 0x00ffff, size: 3.5, font: FONT_URL },
+  { text: "FREELANCE\nENGINEER",       color: 0xff00ff, size: 4.0, font: FONT_URL },
+  { text: "THE\nCORE STACK",           color: 0x99ff33, size: 3.5, font: FONT_URL },
+  { text: "SELECTED\nWORKS",           color: 0x00ffff, size: 3.5, font: FONT_URL },
+  { text: "GLOBAL\nNETWORK",          color: 0xff00ff, size: 4.0, font: FONT_URL },
+  { text: "CONTACT\nME",               color: 0x99ff33, size: 3.5, font: FONT_URL },
 ];
 
 export class TextWall {

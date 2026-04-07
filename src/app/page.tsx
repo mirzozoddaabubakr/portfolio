@@ -71,7 +71,7 @@ export default function Home() {
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="pointer-events-none mb-8 md:mb-0">
               <h1 className="h-massive">FULL-STACK<br/>DEVELOPER</h1>
-              <div className="metadata">/ 01.INITIATE . ABUBAKR_MIRZOZODA</div>
+              <div className="metadata">/ 01 . INTRODUCTION . ABUBAKR MIRZOZODA</div>
             </div>
             <div className="text-left md:text-right" style={{ transform: activeSection === 1 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 1 ? 1 : 0 }}>
               <p className="metadata mb-2 md:mb-4 text-[#00ffff]">/ FREELANCE . TAJIKISTAN</p>
@@ -91,11 +91,11 @@ export default function Home() {
             <div className="flex-1 text-left md:text-right" style={{ transform: activeSection === 2 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 2 ? 1 : 0 }}>
               <p className="metadata mb-1.5 md:hidden text-[#ff00ff]">/ 02 · EXPERIENCE</p>
               <h1 className="h-massive">FREELANCE<br className="hidden md:block" /> ENGINEER</h1>
-              <div className="metadata hidden md:block">/ 02.EXPERIENCE . 2023—PRESENT</div>
-              <p className="metadata mt-2 mb-4 text-[#ff00ff] hidden md:block">/ CORE_DEVELOPMENT</p>
+              <div className="metadata hidden md:block">/ 02 . EXPERIENCE . 2023—PRESENT</div>
+              <p className="metadata mt-2 mb-4 text-[#ff00ff] hidden md:block">/ FULL STACK DEVELOPMENT</p>
               <p className="p-desc md:ml-auto mb-4">Portfolio sites, Shopify stores, custom frontend UIs, backend API integrations, and performance-optimised web solutions for a growing international client base.</p>
               <div className="inline-block md:block mt-2 md:mt-8 p-1.5 md:p-3 border border-dotted border-[#ff00ff]/40 text-[#ff00ff] text-[0.45rem] md:text-[0.6rem] font-bold tracking-widest uppercase">
-                STATUS: OPEN_TO_COLLABORATION
+                STATUS: AVAILABLE FOR NEW PROJECTS
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function Home() {
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
               <h1 className="h-massive">THE<br/>CORE STACK</h1>
-              <div className="metadata">/ 03.STACK . MODULES</div>
+              <div className="metadata">/ 03 . STACK . CORE TECHNOLOGIES</div>
             </div>
             <div className="w-full md:w-auto" style={{ transform: activeSection === 3 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 3 ? 1 : 0 }}>
               <div className="grid grid-cols-3 gap-2 md:gap-4 mt-4 md:mt-8 md:w-[360px] md:ml-auto pointer-events-auto">
@@ -123,7 +123,7 @@ export default function Home() {
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-6 md:mb-0">
               <h1 className="h-massive">SELECTED<br/>WORKS</h1>
-              <div className="metadata">/ 04.WORKS . ARCHITECTURE</div>
+              <div className="metadata">/ 04 . WORKS . PROJECTS</div>
             </div>
             <div className="text-left md:text-right" style={{ transform: activeSection === 4 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 4 ? 1 : 0 }}>
               <p className="metadata mb-2 md:mb-4 text-[#ff00ff]">/ PROJECT_GALLERY</p>
@@ -136,11 +136,11 @@ export default function Home() {
         <section className="oryzo-section" id="s5" style={sectionStyle(5)}>
           <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
-              <h1 className="h-massive">GLOBALLY<br/>SCALED</h1>
-              <div className="metadata">/ 05.GLOBAL . NETWORK</div>
+              <h1 className="h-massive">GLOBAL<br/>NETWORK</h1>
+              <div className="metadata">/ 05 . GLOBAL . LANGUAGES</div>
             </div>
             <div className="w-full md:w-auto text-left md:text-right" style={{ transform: activeSection === 5 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 5 ? 1 : 0 }}>
-              <p className="metadata mb-4 text-[#00ffff] hidden md:block">/ LANGUAGE_MATRIX</p>
+              <p className="metadata mb-4 text-[#00ffff] hidden md:block">/ PROFICIENCIES</p>
               <div className="grid grid-cols-3 gap-x-4 md:gap-x-12 gap-y-3 md:gap-y-4 md:ml-auto">
                 {[['TAJ','NAT.'],['PER','C2'],['ENG','C1'],['RUS','C1'],['SPA','A1'],['POL','A1']].map(([lang, level]) => (
                   <div key={lang} className="flex flex-col">
@@ -157,12 +157,12 @@ export default function Home() {
         <section className="oryzo-section" id="s6" style={sectionStyle(6)}>
           <div className="w-full h-full flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-8 md:mb-0">
-              <h1 className="h-massive">INITIATE<br/>PROJECT</h1>
-              <div className="metadata">/ 06.TERMINAL . END_STEP</div>
+              <h1 className="h-massive">GET IN<br/>TOUCH</h1>
+              <div className="metadata">/ 06 . CONTACT . GET IN TOUCH</div>
             </div>
             <div className="text-left md:text-right w-full md:w-auto" style={{ transform: activeSection === 6 ? 'translateX(0)' : 'translateX(60px)', transition: 'transform 0.6s ease 0.15s, opacity 0.5s ease', opacity: activeSection === 6 ? 1 : 0 }}>
               <p className="metadata mb-2 md:mb-4 text-[#ff00ff] hidden md:block">/ SECURE_CONNECTION_READY</p>
-              <p className="p-desc mb-6 md:mb-8 md:ml-auto hidden md:block">Available for freelance projects, long-term collaborations, and full-time remote roles. Drop your coordinates — let&apos;s build something exceptional.</p>
+              <p className="p-desc mb-6 md:mb-8 md:ml-auto hidden md:block">Available for freelance projects, long-term collaborations, and full-time remote roles. Let&apos;s build something exceptional.</p>
               <TerminalContact />
             </div>
           </div>

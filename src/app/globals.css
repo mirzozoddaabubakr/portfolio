@@ -3,7 +3,7 @@
 @theme {
   --font-header: var(--font-header), "Cinzel", serif;
   --font-body: var(--font-body), "Space Grotesk", sans-serif;
-  --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+  --font-ui: var(--font-body), "Space Grotesk", sans-serif;
 }
 
 :root {
@@ -66,15 +66,6 @@ body::after {
     color: transparent;
   }
 
-  .flicker-text {
-    animation: flicker 4s infinite;
-  }
-
-  @keyframes flicker {
-    0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
-    20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
-  }
-
   /* ─── ORYZO SECTION (Responsive Base) ─── */
   .oryzo-section {
     position: fixed;
@@ -103,13 +94,12 @@ body::after {
   }
 
   .metadata {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.3em;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #b3b3b3;
-    opacity: 0.8;
+    color: #a0a0a0;
   }
 
   .p-desc {
@@ -176,12 +166,7 @@ body::after {
     border: 1px dotted var(--accent);
   }
 
-  @keyframes pulse-placeholder {
-    0%, 100% { opacity: 0.1; }
-    50% { opacity: 0.4; }
-  }
-
   .animate-pulse-placeholder::placeholder {
-    animation: pulse-placeholder 1s infinite steps(2);
+    opacity: 0.3;
   }
-}
+}
