@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141416"/>
+      <stop offset="100%" stop-color="#0b0b0c"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB020"/>
+      <stop offset="50%" stop-color="#FF8A00"/>
+      <stop offset="100%" stop-color="#D96300"/>
+    </linearGradient>
+    <linearGradient id="whiteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EDEDED"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background container -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  <rect width="508" height="508" x="2" y="2" rx="110" stroke="#26262b" stroke-width="2"/>
+
+  <!-- Iconic Letter 'A' Monogram -->
+  <g transform="translate(0, 8)">
+    <!-- Amber Athletic Speed Strike -->
+    <path d="M 256 168 L 298 250 L 266 250 L 332 374 L 322 368 L 250 226 L 274 226 Z" fill="url(#amberGrad)" filter="url(#glow)"/>
+    
+    <!-- Left Main Diagonal Leg of 'A' -->
+    <path d="M 256 128 L 278 174 L 222 284 L 268 266 L 244 322 L 180 348 L 118 382 L 182 280 L 176 270 L 256 128 Z" fill="url(#whiteGrad)"/>
+
+    <!-- Right Angular Wing of 'A' -->
+    <path d="M 288 196 L 394 382 L 344 374 L 274 238 Z" fill="url(#whiteGrad)"/>
+  </g>
+</svg>
